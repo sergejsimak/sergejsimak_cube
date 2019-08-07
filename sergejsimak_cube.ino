@@ -41,8 +41,6 @@ String disp_text = " 9876543210";
 #define TEXT 6
 #define LIT 7
 #define WALKING_CUBE 8
-#define SINUS_FILL 9
-#define SINUS_THIN 10
 
 #include <SPI.h>
 #include "GyverButton.h"
@@ -129,8 +127,6 @@ void loop() {
     case GLOW: glow(); break;
     case TEXT: text(); break;
     case LIT: lit(); break;
-    case SINUS_FILL: sinusFill(); break;
-    case SINUS_THIN: sinusThin(); break;
     case WALKING_CUBE: walkingCube(); break;
 
     default: rain(); break;
@@ -158,8 +154,6 @@ void changeMode() {
     case GLOW: modeTimer = GLOW_TIME; break;
     case TEXT: modeTimer = TEXT_TIME; break;
     case LIT: modeTimer = CLOCK_TIME; break;
-    case SINUS_FILL: modeTimer = RAIN_TIME; break;
-    case SINUS_THIN: modeTimer = RAIN_TIME; break;
     case WALKING_CUBE: modeTimer = WALKING_TIME; break;
   }
   modeTimer = RAIN_TIME;
@@ -219,46 +213,6 @@ void walkingCube() {
     setVoxel(thisX, thisY + 1, thisZ + 1);
     setVoxel(thisX + 1, thisY, thisZ + 1);
     setVoxel(thisX + 1, thisY + 1, thisZ + 1);
-  }
-}
-
-void sinusFill() {
-  if (loading) {
-    clearCube();
-    loading = false;
-  }
-  timer++;
-  if (timer > modeTimer) {
-    timer = 0;
-    clearCube();
-    if (++pos > 10) pos = 0;
-    for (uint8_t i = 0; i < 8; i++) {
-      for (uint8_t j = 0; j < 8; j++) {
-        int8_t sinZ = 4 + ((float)sin((float)(i + pos) / 2) * 2);
-        for (uint8_t y = 0; y < sinZ; y++) {
-          setVoxel(i, y, j);
-        }
-      }
-    }
-  }
-}
-
-void sinusThin() {
-  if (loading) {
-    clearCube();
-    loading = false;
-  }
-  timer++;
-  if (timer > modeTimer) {
-    timer = 0;
-    clearCube();
-    if (++pos > 10) pos = 0;
-    for (uint8_t i = 0; i < 8; i++) {
-      for (uint8_t j = 0; j < 8; j++) {
-        int8_t sinZ = 4 + ((float)sin((float)(i + pos) / 2) * 2);
-        setVoxel(i, sinZ, j);
-      }
-    }
   }
 }
 
